@@ -130,10 +130,10 @@ tile_data = PoolIntArray( 7, 1, 0, 9, 4, 0, 12, 2, 0, 15, 3, 0, 65538, 2, 0, 655
 [node name="Turrets" type="Node2D" parent="."]
 
 [node name="GunT1" parent="Turrets" instance=ExtResource( 7 )]
-position = Vector2( 410.821, 347.963 )
+position = Vector2( 374.954, 315.871 )
 
 [node name="GunT2" parent="Turrets" instance=ExtResource( 8 )]
-position = Vector2( 158.267, 552.251 )
+position = Vector2( 137.502, 522.991 )
 
 [node name="MissileT1" parent="Turrets" instance=ExtResource( 6 )]
-position = Vector2( 298.575, 299.697 )
+position = Vector2( 268.371, 270.437 )
