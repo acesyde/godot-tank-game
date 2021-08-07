@@ -6,7 +6,16 @@ func set_tower_preview(tower_type: String, mouse_position: Vector2) -> void:
 	drag_tower.set_name("DragTower")
 	drag_tower.modulate = Color("ad54ff3c")
 	
+	var range_texture := Sprite.new()
+	range_texture.position = Vector2(32,32)
+	var scaling = GameData.tower_data[tower_type]["range"] / 600.0
+	range_texture.scale = Vector2(scaling, scaling)
+	var texture = load("res://Assets/UI/range_overlay.png")
+	range_texture.texture = texture
+	range_texture.modulate = Color("ad54ff3c")
+	
 	var control = Control.new()
+	control.add_child(range_texture, true)
 	control.add_child(drag_tower, true)
 	control.rect_position = mouse_position
 	control.set_name("TowerPreview")
@@ -17,3 +26,4 @@ func update_tower_preview(new_position: Vector2, color: String) -> void:
 	get_node("TowerPreview").rect_position = new_position
 	if get_node("TowerPreview/DragTower").modulate != Color(color):
 		get_node("TowerPreview/DragTower").modulate = Color(color)
+		get_node("TowerPreview/Sprite").modulate = Color(color)

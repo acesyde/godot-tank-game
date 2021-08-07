@@ -6,6 +6,7 @@ var map_node: Node2D
 
 var build_mode: bool = false
 var build_valid: bool = false
+var build_tile: Vector2 = Vector2.ZERO
 var build_location
 var build_type: String
 
@@ -28,12 +29,15 @@ func _unhandled_input(event: InputEvent) -> void:
 		cancel_build_mode()
 
 func initiate_build_mode(tower_type: String) -> void:
+	if build_mode:
+		cancel_build_mode()
+		
 	build_type = tower_type + "T1"
 	build_mode = true
 	ui.set_tower_preview(build_type, get_global_mouse_position())
 	
 func update_tower_preview() -> void:
-	var tower_exclusion_node: Node = map_node.get_node("TowerExclusion")
+	var tower_exclusion_node: TileMap = map_node.get_node("TowerExclusion")
 	var mouse_position: Vector2 = get_global_mouse_position()
 	var current_tile: Vector2 = tower_exclusion_node.world_to_map(mouse_position)
 	var tile_position: Vector2 = tower_exclusion_node.map_to_world(current_tile)
@@ -42,6 +46,7 @@ func update_tower_preview() -> void:
 		ui.update_tower_preview(tile_position, "ad54ff3c")
 		build_valid = true
 		build_location = tile_position
+		build_tile = current_tile
 	else:
 		ui.update_tower_preview(tile_position, "adff4545")
 		build_valid = false
@@ -49,10 +54,11 @@ func update_tower_preview() -> void:
 func cancel_build_mode() -> void:
 	build_mode = false
 	build_valid = false
-	get_node("UI/TowerPreview").queue_free()
+	get_node("UI/TowerPreview").free()
 	
 func verify_and_build():
 	if build_valid:
 		var new_tower = load("res://Scenes/Turrets/" + build_type + ".tscn").instance()
 		new_tower.position = build_location
 		map_node.get_node("Turrets").add_child(new_tower, true)
+		map_node.get_node("TowerExclusion").set_cellv(build_tile, 5)
