@@ -6,6 +6,11 @@ var tower_data = {
 		"rof": 1,
 		"range": 350
 	},
+	"GunT2":{
+		"damage": 20,
+		"rof": 1,
+		"range": 350
+	},
 	"MissileT1":{
 		"damage": 100,
 		"rof": 3,
