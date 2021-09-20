@@ -3,12 +3,14 @@ extends Node2D
 
 onready var turret: Sprite = $Turret
 onready var range_collisionshape2d: CollisionShape2D = $Range/CollisionShape2D
+onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 var enemy_array: Array = []
 var built: bool = false
 var enemy: Node2D
 var type: String
 var ready: bool = true
+var category: String
 
 func _ready() -> void:
 	if built:
@@ -17,7 +19,8 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if enemy_array.size() != 0 and built:
 		select_enemy()
-		turn()
+		if not animation_player.is_playing():
+			turn()
 		if ready:
 			fire()
 	else:
@@ -36,9 +39,21 @@ func select_enemy() -> void:
 
 func fire() -> void:
 	ready = false
+	
+	if category == "Projectile":
+		fire_gun()
+	elif category == "Missile":
+		fire_missile()
+	
 	enemy.on_hit(GameData.tower_data[type]["damage"])
 	yield(get_tree().create_timer(GameData.tower_data[type]["rof"]), "timeout")
 	ready = true
+
+func fire_gun() -> void:
+	animation_player.play("Fire")
+	
+func fire_missile() -> void:
+	pass
 
 func _on_Range_body_entered(body: Node) -> void:
 	enemy_array.append(body.get_parent())
